@@ -6,7 +6,7 @@
     <developer id="app.fluxer">
         <name>Fluxer</name>
     </developer>
-    <summary>Instant messaging and VoIP application</summary>
+    <summary>Instant messaging and VoIP</summary>
     <metadata_license>CC0-1.0</metadata_license>
     <project_license>AGPL-3.0-or-later</project_license>
     <icon type="stock">app.fluxer.Fluxer</icon>
