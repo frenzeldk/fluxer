@@ -8,6 +8,7 @@ import type {User} from '../models/User';
 import {accountPolicyContactHasCapability} from '../risk/AccountPolicyService';
 import {checkHasActivePaidPremium} from '../user/UserHelpers';
 import {isFluxerFlutterAndroidClient, isFluxerFlutterClient, isFluxerFlutterIosClient} from '../utils/UserAgentUtils';
+import { Config } from '../Config';
 
 const FLUTTER_CLIENT_ALLOWED_GUILD_ID = createGuildID(1489322182823577203n);
 const ANDROID_FLUTTER_OPEN_ACCESS_AT_MS = Date.parse('2026-06-15T21:00:00.000Z');
@@ -22,7 +23,7 @@ export async function assertFlutterClientLoginAllowed(
 	if (!isFluxerFlutterClient(request)) return;
 	if (accountPolicyContactHasCapability(user.email, 'client_gate_exempt')) return;
 	if (isFluxerFlutterAndroidClient(request) && isAndroidOpenAccessActive()) return;
-	if (isFluxerFlutterIosClient(request) && checkHasActivePaidPremium(user)) return;
+	if (isFluxerFlutterIosClient(request) && (checkHasActivePaidPremium(user) || Config.instance.selfHosted)) return;
 	const member = await memberRepository.getMember(FLUTTER_CLIENT_ALLOWED_GUILD_ID, user.id);
 	if (member) return;
 	throw InputValidationError.fromCodes([
